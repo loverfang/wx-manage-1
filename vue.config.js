@@ -36,8 +36,8 @@ module.exports = {
 		config.plugins.delete('prefetch')
 	},
 
-	outputDir: undefined,
-	assetsDir: undefined,
+	outputDir: 'dist',
+	assetsDir: 'res/admin/',
 	runtimeCompiler: undefined,
 	productionSourceMap: false,
 	parallel: undefined,
