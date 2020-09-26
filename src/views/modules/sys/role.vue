@@ -1,6 +1,6 @@
 <template>
     <div class="mod-role">
-        <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+        <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()" size="small">
             <el-form-item>
                 <el-input v-model="dataForm.roleName" placeholder="角色名称" clearable></el-input>
             </el-form-item>
@@ -104,6 +104,7 @@ export default {
         // 删除
         deleteHandle(id) {
             var ids = id ? [id] : this.dataListSelections.map(item => item.roleId)
+            debugger
             this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',

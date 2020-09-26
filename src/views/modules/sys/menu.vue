@@ -1,6 +1,6 @@
 <template>
     <div class="mod-menu">
-        <el-form :inline="true" :model="dataForm">
+        <el-form :inline="true" :model="dataForm" size="small">
             <el-form-item>
                 <el-button v-if="isAuth('sys:menu:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
             </el-form-item>

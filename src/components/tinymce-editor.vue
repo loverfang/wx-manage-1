@@ -43,22 +43,23 @@ export default {
     mounted() {
         // console.log('tinymce-editor mounted:',this.value)
         tinymce.init({});
-        this.cosInit();
+        // this.cosInit();
     },
     methods: {
-        cosInit() {
-            this.$http({
-                url: this.$http.adornUrl("/sys/oss/config"),
-                method: "get",
-                params: this.$http.adornParams()
-            }).then(({ data }) => {
-                if (data && data.code === 200) {
-                    this.cosConfig = data.config;
-                } else {
-                    this.$message.error("请先配置云存储相关信息！");
-                }
-            });
-        },
+        // cosInit() {
+        //     this.$http({
+        //         url: this.$http.adornUrl("/sys/oss/config"),
+        //         method: "get",
+        //         params: this.$http.adornParams()
+        //     }).then(({ data }) => {
+        //         if (data && data.code === 200) {
+        //             this.cosConfig = data.config;
+        //         } else {
+        //             this.$message.error("请先配置云存储相关信息！");
+        //         }
+        //     });
+        // },
+
         onExecCommand(e) {
             //console.log(e)
         },
@@ -68,14 +69,15 @@ export default {
                 let formData = new FormData();
                 formData.append("file", file);
                 this.$http({
-                    url: this.$http.adornUrl('/sys/oss/upload'),
+                    url: this.$http.adornUrl('/sys/oss/uploadFile'),
                     method: 'post',
                     data: formData
                 }).then(({ data }) => {
                     console.log(data)
+
                     if (data && data.code === 200) {
-                        this.$emit('uploaded', data.url)
-                        resolve(data.url)
+                        this.$emit('uploaded',data.files[0].filePath)
+                        resolve( data.files[0].filePath )
                     } else {
                         this.$message.error("文件上传失败：" + data.msg)
                         reject(data.msg)

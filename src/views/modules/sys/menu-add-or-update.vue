@@ -1,6 +1,6 @@
 <template>
     <el-dialog :title="!dataForm.id ? '新增' : '修改'" :close-on-click-modal="false" :visible.sync="visible">
-        <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+        <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px" size="small">
             <el-form-item label="类型" prop="type">
                 <el-radio-group v-model="dataForm.type">
                     <el-radio v-for="(type, index) in dataForm.typeList" :label="index" :key="index">{{ type }}</el-radio>
@@ -38,8 +38,8 @@
             <div>参考ElementUI图标库, <a href="https://element.eleme.cn/#/zh-CN/component/icon" target="_blank">找图标</a></div>
         </el-form>
         <span slot="footer" class="dialog-footer">
-            <el-button @click="visible = false">取消</el-button>
-            <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
+            <el-button @click="visible = false" size="small">取消</el-button>
+            <el-button type="primary" @click="dataFormSubmit()" size="small">确定</el-button>
         </span>
     </el-dialog>
 </template>
