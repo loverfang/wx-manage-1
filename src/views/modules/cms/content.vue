@@ -51,11 +51,9 @@
 
                 <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="50" align="center" />
-                    <el-table-column label="资料名称" align="center" prop="name" />
                     <el-table-column label="资料类别" align="center" prop="categoryName" />
+                    <el-table-column label="资料名称" align="left"  prop="name" />
                     <el-table-column label="资料作者" align="center" prop="author" :show-overflow-tooltip="true" />
-                    <el-table-column label="发表平台" align="center" prop="platform" :show-overflow-tooltip="true" />
-                    <el-table-column label="资料来源" align="center" prop="source" :show-overflow-tooltip="true" />
                     <el-table-column label="上传时间" align="center" prop="createTime" width="160">
                         <template slot-scope="scope">
                             <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -85,6 +83,8 @@
                                 v-model="form.categoryId"/>
                         </el-form-item>
                     </el-col>
+                </el-row>
+                <el-row>
                     <el-col :span="12">
                         <el-form-item label="资料名称" prop="name">
                             <el-input v-model="form.name" placeholder="请输入用资料名称" />
@@ -92,51 +92,9 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="12">
-                        <el-form-item label="资料来源" prop="source">
-                            <el-input v-model="form.source" placeholder="请输入手机号码" maxlength="11" />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="资料作者" prop="author">
-                            <el-input v-model="form.author" placeholder="请输入邮箱" maxlength="50" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="12">
-                        <el-form-item label="发表平台">
-                            <el-input v-model="form.platform" placeholder="请输入发表平台" maxlength="11" />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="资料编号">
-                            <el-input v-model="form.publicNum" placeholder="资料编号" maxlength="50" />
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
                     <el-col :span="24">
                         <el-form-item label="资料摘要">
-                            <el-input v-model="form.abstracts" type="textarea" placeholder="请输入内容" :rows=5></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-                <el-row>
-                    <el-col :span="24">
-                        <el-form-item label="资料封面" v-model="form.coverImgUrl" prop="coverImgUrl">
-                            <el-upload
-                                class="avatar-uploader"
-                                action="/api/sys/oss/uploadFile"
-                                :data="coverChildPath"
-                                :headers="uploadHeaders"
-                                :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                                :before-upload="beforeAvatarUpload">
-                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                            </el-upload>
+                            <tinymce-editor ref="editor" v-model="form.abstracts" style="height:300px;"></tinymce-editor>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -180,10 +138,12 @@
     import { treeDataTranslate } from '@/utils'
     import Treeselect from "@riophae/vue-treeselect";
     import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+ 
+    import TinymceEditor from "@/components/tinymce-editor";
 
     export default {
         name: "User",
-        components: { Treeselect },
+        components: { Treeselect, TinymceEditor},
         data() {
             return {
                 // 遮罩层
@@ -229,10 +189,8 @@
                 },
 
                 // 封面图片地址
-                imageUrl: '',
-
                 fileList:[],
-                
+
                 uploadHeaders: {token: this.$cookie.get('token')},
                 coverChildPath: {childPath:'covers_'},
                 fileChildPath:  {childPath:'files_'},
@@ -590,28 +548,6 @@
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel'
                 });
-            },
-
-            // 封面上传成功后的回调
-            handleAvatarSuccess(res, file) {
-                // 页面显示地址
-                this.imageUrl = URL.createObjectURL(file.raw);
-                // debugger
-                // 表单地址
-                this.form.coverImgUrl  = res.files[0].filePath;
-            },
-
-            // 封面上传前的验证
-            beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt10M = file.size / 1024 / 1024 < 50;
-                if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
-                }
-                if (!isLt10M) {
-                this.$message.error('上传头像图片大小不能超过 50MB!');
-                }
-                return isJPG && isLt10M;
             },
 
             // 树形菜单自定义属性,有了这些属性转换才能政策显示

@@ -21,16 +21,16 @@ export default {
     data() {
         return {
             init: {
-                language_url: "./tinymce/zh_CN.js", //public目录下
+                language_url: "/res/admin/lib/tinymce@4.7.5/zh_CN.js", //public目录下
                 language: "zh_CN",
-                height: 500,
-                plugins: "lists image media table paste link searchreplace anchor code preview pagebreak importcss",
-                toolbar: "undo redo searchreplace |  formatselect pagebreak | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists link anchor image media table | removeformat code preview", //工具栏展示项
+                height: 200,
+                plugins: "lists image media table paste link searchreplace code preview pagebreak importcss",
+                toolbar: "undo redo | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists link anchor image media table | removeformat code preview", //工具栏展示项
                 toolbar_drawer: false,
                 image_advtab: true,
                 object_resizing: false,
                 paste_data_images: true,
-                content_css: "./tinymce/article.css",
+                content_css: "/res/admin/lib/tinymce@4.7.5/article.css",
                 images_upload_handler: (blobInfo, success, failure) => {
                     this.uploadFile(blobInfo.blob()).then(fileUrl => success(fileUrl)).catch(err => failure(err))
                 }
