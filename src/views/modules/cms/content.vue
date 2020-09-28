@@ -51,9 +51,9 @@
 
                 <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="50" align="center" />
-                    <el-table-column label="资料类别" align="center" prop="categoryName" />
+                    <el-table-column label="资料类别" align="center" prop="categoryName" :show-overflow-tooltip="true" />
                     <el-table-column label="资料名称" align="left"  prop="name" />
-                    <el-table-column label="资料作者" align="center" prop="author" :show-overflow-tooltip="true" />
+                    <el-table-column label="显示顺序" align="center" prop="priority"/>
                     <el-table-column label="上传时间" align="center" prop="createTime" width="160">
                         <template slot-scope="scope">
                             <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -71,7 +71,7 @@
         </el-row>
 
         <!-- 添加或修改参数配置对话框 -->
-        <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
+        <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body :destroy-on-close="true">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px" size="small">
                 <el-row>
                     <el-col :span="12">
@@ -92,9 +92,17 @@
                     </el-col>
                 </el-row>
                 <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="显示顺序" prop="priority">
+                            <el-input-number v-model="form.priority" controls-position="right" @change="handleChange" :min="1"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
+                <el-row>
                     <el-col :span="24">
                         <el-form-item label="资料摘要">
-                            <tinymce-editor ref="editor" v-model="form.abstracts" style="height:300px;"></tinymce-editor>
+                            <tinymce-editor ref="editor" v-model="form.abstracts" style="height:300px;" v-if="open"></tinymce-editor>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -322,6 +330,7 @@
                     name: undefined,
                     abstracts: undefined,
                     content: undefined,
+                    priority: 100,
                     coverImgUrl: undefined,
                     author: undefined,
                     platform: undefined,
@@ -378,13 +387,16 @@
                         this.form.categoryId=data.dataInfo.categoryId;
                         this.form.categoryName=data.dataInfo.categoryName;
                         this.form.name=data.dataInfo.name;
-                        this.form.abstracts=data.dataInfo.abstracts;
-                        this.form.content=data.dataInfo.content;
+                        this.form.abstracts='';
+                        
+                        this.form.priority=data.dataInfo.priority;
                         this.form.coverImgUrl=data.dataInfo.coverImgUrl;
                         this.form.author=data.dataInfo.author;
                         this.form.platform=data.dataInfo.platform
                         this.form.source=data.dataInfo.source;
                         this.form.publicNum=data.dataInfo.publicNum;
+
+                        // this.form.content=(data.dataInfo.content)?data.dataInfo.content:'';
 
                         var oldDataFileList = data.dataInfo.dataFileList;
 

@@ -24,11 +24,16 @@
             </el-table-column>
             <el-table-column prop="parentName" header-align="left" align="left" label="父类别名称">
             </el-table-column>
-            <el-table-column prop="priority" header-align="center" align="center" label="显示顺序">
+            <el-table-column prop="priority" header-align="center" align="center" label="显示顺序" width="100">
             </el-table-column>
             <el-table-column prop="categoryUrl" header-align="center" align="left" label="连接地址">
             </el-table-column>
-            <el-table-column prop="remark" header-align="center" align="left" label="备注信息">
+            <el-table-column prop="isNavigater" header-align="center" align="left" label="导航是否显示">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.isNavigater == 1">显示</span>
+                    <span v-else-if="scope.row.isNavigater == 0">不显示</span>
+                    <span v-else>不显示</span>
+                </template>
             </el-table-column>
             <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
                 <template slot-scope="scope">

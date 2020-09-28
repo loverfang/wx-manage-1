@@ -5,10 +5,6 @@
                 <el-input v-model="dataForm.categoryName" placeholder="类别名称"></el-input>
             </el-form-item>
 
-            <el-form-item label="跳转地址" prop="categoryUrl">
-                <el-input v-model="dataForm.categoryUrl" placeholder="如(http://192.168.0.1:8000)"></el-input>
-            </el-form-item>
-
             <el-form-item label="父类别" prop="parentId">
                 <!-- 下拉树 -->
                 <treeselect
@@ -16,6 +12,17 @@
                     :normalizer="normalizer"
                     placeholder="请选择父类别"                   
                     v-model="dataForm.parentId"/>
+            </el-form-item>
+
+            <el-form-item label="跳转地址" prop="categoryUrl">
+                <el-input v-model="dataForm.categoryUrl" placeholder="如(http://192.168.0.1:8000)"></el-input>
+            </el-form-item>
+
+            <el-form-item label="导航是否展示" prop="categoryUrl">
+                <el-switch
+                    active-color="#13ce66"
+                    v-model="dataForm.isNavigater"> 
+                </el-switch> <label>绿色:展示，灰色:不展示</label>
             </el-form-item>
 
             <el-form-item label="显示顺序" prop="priority">
@@ -55,6 +62,7 @@
                     categoryUrl: '',
                     parentId: 0,
                     priority: 1,
+                    isNavigater: true,
                     remark:''
                 },
 
@@ -123,6 +131,7 @@
                                 this.dataForm.parentId = data.category.parentId
                                 this.dataForm.categoryUrl = data.category.categoryUrl
                                 this.dataForm.priority = data.category.priority
+                                this.dataForm.isNavigater = (data.category.isNavigater==1)?true:false
                                 this.dataForm.remark = data.category.remark
                                 this.valueId = data.category.parentId
                             }
@@ -145,6 +154,7 @@
                     categoryName: undefined,
                     parentId: undefined,
                     priority: 1,
+                    isNavigater: false,
                     remark:undefined
                 };
                 this.valueId = undefined
@@ -164,6 +174,7 @@
                                 'categoryName': this.dataForm.categoryName,
                                 'parentId': this.dataForm.parentId,
                                 'categoryUrl': this.dataForm.categoryUrl,
+                                'isNavigater': (this.dataForm.isNavigater)?1:0,
                                 'priority': this.dataForm.priority,
                                 'remark': this.dataForm.remark
                             })
